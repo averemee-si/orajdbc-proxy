@@ -46,10 +46,12 @@ public class OraProxyUtils {
 	private static int versionMinor = 0;
 
 	static {
-		try (InputStream is = OraProxyUtils.class.getResourceAsStream(PROPS_PATH)) {
+		try {
+			InputStream is = OraProxyUtils.class.getResourceAsStream(PROPS_PATH);
 			Properties props = new Properties();
 			props.load(is);
 			version = props.getProperty("version", version).trim();
+			is.close();
 			final int firstDotPos = version.indexOf('.');
 			final int secondDotPos = firstDotPos + version.substring(firstDotPos + 1).indexOf('.') + 1;
 			versionMajor = Integer.parseInt(version.substring(0, firstDotPos));

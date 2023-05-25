@@ -122,7 +122,7 @@ public class OraProxyFileUtils {
 
 	 private static void convertYaml(final File sourceFile, final File targetFile) throws IOException {
 		final BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
-		final Map<String, String> data = new HashMap<>();
+		final Map<String, String> data = new HashMap<String, String>();
 		OraProxyUtils.readSimpleYaml(reader, data);
 		reader.close();
 

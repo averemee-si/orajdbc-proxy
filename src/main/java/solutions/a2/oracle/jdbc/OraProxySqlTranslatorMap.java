@@ -32,7 +32,7 @@ public class OraProxySqlTranslatorMap implements OraProxyTranslatorIntf {
 	private final Map<String, String> sqlMap;
 
 	OraProxySqlTranslatorMap(final URL mappingFileUrl) throws SQLException {
-		sqlMap = new ConcurrentHashMap<>();
+		sqlMap = new ConcurrentHashMap<String, String>();
 		try {
 			OraProxyUtils.readSimpleYaml(
 				new BufferedReader(new InputStreamReader(mappingFileUrl.openStream())), sqlMap);
