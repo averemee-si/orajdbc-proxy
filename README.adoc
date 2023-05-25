@@ -1,0 +1,101 @@
+= Oracle JDBC Proxy driver
+
+== Introduction
+*Oracle JDBC Proxy driver* is an alternative to the https://docs.oracle.com/en/database/oracle/oracle-database/23/drdaa/SQL-translation-framework-overview.html[Oracle SQL Translation Framework] for applications that use https://en.wikipedia.org/wiki/Java_Database_Connectivity[JDBC] to connect to an https://www.oracle.com/database/[Oracle Database].
+*Oracle JDBC Proxy driver* is designed to change the SQL statements being executed without changing the JVM based application (Spring/J2EE/servlets etc) itself. During initialization, *Oracle JDBC Proxy driver* must receive a URL pointing to the mapping file and connection parameters to the Oracle database. The mapping file is read into memory (https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html[ConcurrentHashMap] or https://chronicle.software/map/[Chronicle Map]). When an application executes a SQL statement, the driver computes the https://docs.oracle.com/en/database/oracle/oracle-database/23/arpls/DBMS_SQL_TRANSLATOR.html#GUID-DFFB611B-853A-434E-808D-D713671C3AA4[SQL_ID] without roundtrip to the database, and if that SQL_ID is contained in the mapping, it replaces the original SQL text with the SQL text from mapping structure.
+
+=== Project goals
+Since https://docs.oracle.com/en/database/oracle/oracle-database/23/drdaa/SQL-translation-framework-overview.html[Oracle SQL Translation Framework] for JDBC:
+* For Oracle Database 12c+
+* Uses LOB storage in the `*SQLTXL_SQL$*` table to store translations
+* For the Oracle JDBC driver to work when the parameter `*oracle.jdbc.sqlTranslationProfile*` is set, an https://mvnrepository.com/artifact/org.ow2.asm/asm[additional undocumented jar library dependency] is required (version depends on version of Oracle JDBC driver)
+
+this project was made. The project's goals are:
+* support for the immutability of the JVM based application (Spring/J2EE/servlets etc) using the Oracle Database while changing database engine to another technology
+* support for JDK versions (and corresponding JDBC specifications) https://en.wikipedia.org/wiki/Java_version_history#Java_6[1.6], https://en.wikipedia.org/wiki/Java_version_history#Java_8[1.8], https://en.wikipedia.org/wiki/Java_version_history#Java_11[11], and https://en.wikipedia.org/wiki/Java_version_history#Java_17[17]
+* using the human-readable https://yaml.org/[YAML] format to store the mapping between SQL_ID of original SQL statement and text of it's replacement
+* no additional dependencies when using https://yaml.org/[YAML] format to store the mapping, you just need to add one small JAR library to https://docs.oracle.com/javase/tutorial/essential/environment/paths.html[Java Classpath], application server, web application, `*$JAVA_HOME/jre/lib/ext*`,  etc
+* applications often contain thousands of SQL statements that need to be changed and the texts of these SQL statements are tens and hundreds of megabytes, and in this case, storing mapping in Java Heap using https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html[ConcurrentHashMap] is resource-intensive and therefore https://chronicle.software/map/[Chronicle Map] is used as an option for *Oracle JDBC Proxy driver* with JDK 1.8+, providing off-heap storage.
+
+=== MigDevOps
+To simplify database migration and reduce TCO, we are planning to launch a service in the near future, which will automatically generate a mapping file based on trace files (SQL Trace, or 'event 10046, level 1', etc) containing the user activity. If you need such a file/automation immediately, then write us an email at oracle@a2-solutions.eu
+
+== Using the Oracle JDBC Proxy Driver
+To work with the *Oracle JDBC Proxy driver* you need to change the original connection string as follows:
+
+. Change connection string prefix from `*jdbc:oracle:thin*` to `*jdbc:proxy:oracle*`
+. Add mandatory *Oracle JDBC Proxy driver* parameter `*a2.mapping.file.url*` 
+
+For example, the original JDBC connection string 
+
+----
+jdbc:oracle:thin:@ora001.a2-solutions.eu:1521/TESTDATA
+----
+should be changed to
+
+----
+jdbc:proxy:oracle:@ora001.a2-solutions.eu:1521/TESTDATA?a2.mapping.file.url=file:///Users/averemee/projects/TESTDATA/mapping/TG4ODBC.yaml
+----
+
+ 
+
+=== Oracle JDBC Proxy Driver parameters
+
+`*a2.mapping.file.url*` - mandatory parameter, URL pointing to a file containing mapping
+
+`*a2.mapping.file.type*` - optional parameter, type of a file containing mapping. Allowed values: `*yaml*` and `*chronical*` (only for JDK1.8+). Default value - `*yaml*`
+
+== Distribution and releases
+
+*Oracle JDBC Proxy driver* versions correspond to different branch names. The first number in the version string, a.k.a. versionMajor, is the JDK version, the second number in the version string, a.k.a. versionMinor, is the major version of the Oracle JDBC driver being proxied. The table below contains additional information about versions and releases
+
+[cols="1,1,1,1",options=header]
+|===
+|Driver Version
+|Branch Name
+|JDK Version
+|Oracle JDBC
+
+|6.11.0
+|ojdbc6-11.2.0.4
+|https://en.wikipedia.org/wiki/Java_version_history#Java_6[1.6]
+|https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc6/11.2.0.4[ojdbc6-11.2.0.4]
+
+|8.12.0
+|ojdbc8-12.2.0.1
+|https://en.wikipedia.org/wiki/Java_version_history#Java_8[1.8]
+|https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8/12.2.0.1[ojdbc8-12.2.0.1]
+|===
+
+== Building from source
+After you've downloaded the code from GitHub, you can build it using Gradle. Use this command:
+---- 
+gradle clean build
+----
+ 
+The generated jar files can be found at: `build/libs/`.
+
+An uber jar containing the library and all its relocated dependencies except the Oracle JDBC driver can also be built. Use this command: 
+----
+gradle clean shadowJar
+----
+
+The generated uber jar file can also be found at: `build/libs/`. At runtime, the uber jar expects to find the Oracle JDBC driver on the classpath.
+ 
+=== Validating secure dependencies
+To ensure no security vulnerabilities in the dependency libraries, run the following.
+----
+gradle dependencyCheckAnalyze
+----
+
+If the above reports any vulnerabilities, upgrade dependencies to use the respective latest versions.
+
+== Version and release history
+
+== Authors
+**Aleksej Veremeev** - *Initial work* - http://a2-solutions.eu/[A2 Rešitve d.o.o.]
+
+== License
+
+This project is licensed under the Apache-2.0 License.
+
