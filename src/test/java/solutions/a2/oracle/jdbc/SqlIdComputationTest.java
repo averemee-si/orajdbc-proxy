@@ -13,11 +13,11 @@
 
 package solutions.a2.oracle.jdbc;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  *  
@@ -63,13 +63,13 @@ public class SqlIdComputationTest {
 
 
 		try {
-			assertEquals(OraProxyUtils.sql_id(s_3qkk2t5ybrd94), "3qkk2t5ybrd94", "Unexpected results");
-			assertEquals(OraProxyUtils.sql_id(s_fqrh9j6rrwq2q), "fqrh9j6rrwq2q", "Unexpected results");
-			assertEquals(OraProxyUtils.sql_id(s_9s4jf35qdc7kd), "9s4jf35qdc7kd", "Unexpected results");
-			assertEquals(OraProxyUtils.sql_id(s_djj5txv2dzwb6), "djj5txv2dzwb6", "Unexpected results");
-			assertEquals(OraProxyUtils.sql_id(s_d6zx7qwmjf7cr), "d6zx7qwmjf7cr", "Unexpected results");
-			assertEquals(OraProxyUtils.sql_id(s_0qdkf6ckmgm11), "0qdkf6ckmgm11", "Unexpected results");
-			assertEquals(OraProxyUtils.sql_id(s_88maya168wkas), "88maya168wkas", "Unexpected results");
+			assertEquals("Must be same!", OraProxyUtils.sql_id(s_3qkk2t5ybrd94), "3qkk2t5ybrd94");
+			assertEquals("Must be same!", OraProxyUtils.sql_id(s_fqrh9j6rrwq2q), "fqrh9j6rrwq2q");
+			assertEquals("Must be same!", OraProxyUtils.sql_id(s_9s4jf35qdc7kd), "9s4jf35qdc7kd");
+			assertEquals("Must be same!", OraProxyUtils.sql_id(s_djj5txv2dzwb6), "djj5txv2dzwb6");
+			assertEquals("Must be same!", OraProxyUtils.sql_id(s_d6zx7qwmjf7cr), "d6zx7qwmjf7cr");
+			assertEquals("Must be same!", OraProxyUtils.sql_id(s_0qdkf6ckmgm11), "0qdkf6ckmgm11");
+			assertEquals("Must be same!", OraProxyUtils.sql_id(s_88maya168wkas), "88maya168wkas");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

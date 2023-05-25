@@ -66,11 +66,9 @@ dependencies {
     // https://mvnrepository.com/artifact/net.openhft/affinity
     implementation("net.openhft:affinity:$chronicleAffinityVersion")
 
-    def jUnitVersion = "5.9.2"
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
+    def jUnitVersion = "4.13.2"
+    // https://mvnrepository.com/artifact/junit/junit
+    testImplementation("junit:junit:$jUnitVersion")
 }
 
 
@@ -90,12 +88,6 @@ shadowJar {
     manifest {
         attributes "Main-Class": "solutions.a2.oracle.jdbc.OraProxyFileUtils"
     }
-}
-
-test {
-	useJUnitPlatform {
-		excludeTags 'ignored'
-	}
 }
 
 publishing {
