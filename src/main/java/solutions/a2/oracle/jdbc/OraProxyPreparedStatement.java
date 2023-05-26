@@ -39,7 +39,6 @@ import oracle.jdbc.OracleConnection;
 import oracle.jdbc.OracleParameterMetaData;
 import oracle.jdbc.OraclePreparedStatement;
 import oracle.jdbc.OracleResultSet;
-import oracle.jdbc.OracleResultSetCache;
 import oracle.jdbc.dcn.DatabaseChangeRegistration;
 import oracle.sql.ARRAY;
 import oracle.sql.BFILE;
@@ -616,23 +615,26 @@ public class OraProxyPreparedStatement implements OraclePreparedStatement {
 		oracle.defineColumnType(columnIndex, type, typeName);
 	}
 
+	@Deprecated
 	@Override
 	public void defineColumnType(int columnIndex, int type, int lobPrefetchSize, short formOfUse) throws SQLException {
 		oracle.defineColumnType(columnIndex, type, lobPrefetchSize, formOfUse);
 	}
 
+	@Deprecated
 	@Override
 	public void defineColumnTypeBytes(int columnIndex, int type, int lobPrefetchSize) throws SQLException {
 		oracle.defineColumnTypeBytes(columnIndex, type, lobPrefetchSize);
 	}
 
+	@Deprecated
 	@Override
 	public void defineColumnTypeChars(int columnIndex, int type, int lobPrefetchSize) throws SQLException {
 		oracle.defineColumnTypeChars(columnIndex, type, lobPrefetchSize);
 	}
 
 	@Override
-	public int getLobPrefetchSize() {
+	public int getLobPrefetchSize() throws SQLException {
 		return oracle.getLobPrefetchSize();
 	}
 
@@ -667,11 +669,6 @@ public class OraProxyPreparedStatement implements OraclePreparedStatement {
 	}
 
 	@Override
-	public void setResultSetCache(OracleResultSetCache cache) throws SQLException {
-		oracle.setResultSetCache(cache);
-	}
-
-	@Override
 	public void setRowPrefetch(int size) throws SQLException {
 		oracle.setRowPrefetch(size);
 	}
@@ -696,6 +693,7 @@ public class OraProxyPreparedStatement implements OraclePreparedStatement {
 		oracle.defineParameterTypeChars(parameterIndex, type, maxSize);
 	}
 
+	@Deprecated
 	@Override
 	public int getExecuteBatch() {
 		return oracle.getExecuteBatch();
@@ -716,6 +714,7 @@ public class OraProxyPreparedStatement implements OraclePreparedStatement {
 		oracle.registerReturnParameter(parameterIndex, externalType, typeName);
 	}
 
+	@Deprecated
 	@Override
 	public int sendBatch() throws SQLException {
 		return oracle.sendBatch();
@@ -983,6 +982,7 @@ public class OraProxyPreparedStatement implements OraclePreparedStatement {
 		oracle.setDoubleAtName(parameterName, value);
 	}
 
+	@Deprecated
 	@Override
 	public void setExecuteBatch(int batchValue) throws SQLException {
 		oracle.setExecuteBatch(batchValue);
