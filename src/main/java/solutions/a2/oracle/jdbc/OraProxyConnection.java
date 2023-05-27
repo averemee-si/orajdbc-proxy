@@ -33,6 +33,7 @@ import java.sql.Statement;
 import java.sql.Struct;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.Map;
@@ -40,11 +41,14 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.concurrent.Executor;
 
+import oracle.jdbc.LogicalTransactionId;
+import oracle.jdbc.LogicalTransactionIdEventListener;
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.OracleConnection;
 import oracle.jdbc.OracleOCIFailover;
 import oracle.jdbc.OraclePreparedStatement;
 import oracle.jdbc.OracleSavepoint;
+import oracle.jdbc.OracleShardingKey;
 import oracle.jdbc.OracleStatement;
 import oracle.jdbc.aq.AQDequeueOptions;
 import oracle.jdbc.aq.AQEnqueueOptions;
@@ -443,6 +447,7 @@ public class OraProxyConnection implements OracleConnection {
 		oracle.cancel();
 	}
 
+	@Deprecated
 	@Override
 	public void clearAllApplicationContext(String nameSpace) throws SQLException {
 		oracle.clearAllApplicationContext(nameSpace);
@@ -738,6 +743,7 @@ public class OraProxyConnection implements OracleConnection {
 		return oracle.getDatabaseChangeRegistration(regid);
 	}
 
+	@Deprecated
 	@Override
 	public int getDefaultExecuteBatch() {
 		return oracle.getDefaultExecuteBatch();
@@ -763,11 +769,13 @@ public class OraProxyConnection implements OracleConnection {
 		return oracle.getEncryptionAlgorithmName();
 	}
 
+	@Deprecated
 	@Override
 	public short getEndToEndECIDSequenceNumber() throws SQLException {
 		return oracle.getEndToEndECIDSequenceNumber();
 	}
 
+	@Deprecated
 	@Override
 	public String[] getEndToEndMetrics() throws SQLException {
 		return oracle.getEndToEndMetrics();
@@ -979,6 +987,7 @@ public class OraProxyConnection implements OracleConnection {
 		oracle.registerTAFCallback(cbk, obj);
 	}
 
+	@Deprecated
 	@Override
 	public void setApplicationContext(String nameSpace, String attribute, String value) throws SQLException {
 		oracle.setApplicationContext(nameSpace, attribute, value);
@@ -999,6 +1008,7 @@ public class OraProxyConnection implements OracleConnection {
 		oracle.setCreateStatementAsRefCursor(value);
 	}
 
+	@Deprecated
 	@Override
 	public void setDefaultExecuteBatch(int batch) throws SQLException {
 		oracle.setDefaultExecuteBatch(batch);
@@ -1014,6 +1024,7 @@ public class OraProxyConnection implements OracleConnection {
 		oracle.setDefaultTimeZone(tz);
 	}
 
+	@Deprecated
 	@Override
 	public void setEndToEndMetrics(String[] metrics, short sequenceNumber) throws SQLException {
 		oracle.setEndToEndMetrics(metrics, sequenceNumber);
@@ -1134,6 +1145,102 @@ public class OraProxyConnection implements OracleConnection {
 	@Override
 	public OracleConnection unwrap() {
 		return oracle.unwrap();
+	}
+
+	@Override
+	public void addLogicalTransactionIdEventListener(LogicalTransactionIdEventListener listener) throws SQLException {
+		oracle.addLogicalTransactionIdEventListener(listener);
+	}
+
+	@Override
+	public void addLogicalTransactionIdEventListener(LogicalTransactionIdEventListener listener, Executor executor)
+			throws SQLException {
+		oracle.addLogicalTransactionIdEventListener(listener, executor);
+	}
+
+	@Override
+	public boolean attachServerConnection() throws SQLException {
+		return oracle.attachServerConnection();
+	}
+
+	@Override
+	public void beginRequest() throws SQLException {
+		oracle.beginRequest();
+	}
+
+	@Override
+	public TIMESTAMP createTIMESTAMP(Timestamp value, Calendar cal) throws SQLException {
+		return oracle.createTIMESTAMP(value, cal);
+	}
+
+	@Override
+	public TIMESTAMPTZ createTIMESTAMPTZ(Timestamp value, ZoneId tzid) throws SQLException {
+		return oracle.createTIMESTAMPTZ(value, tzid);
+	}
+
+	@Override
+	public void detachServerConnection(String tag) throws SQLException {
+		oracle.detachServerConnection(tag);
+	}
+
+	@Override
+	public void endRequest() throws SQLException {
+		oracle.endRequest();
+	}
+
+	@Override
+	public String getDRCPPLSQLCallbackName() throws SQLException {
+		return oracle.getDRCPPLSQLCallbackName();
+	}
+
+	@Override
+	public String getDRCPReturnTag() throws SQLException {
+		return oracle.getDRCPReturnTag();
+	}
+
+	@Override
+	public DRCPState getDRCPState() throws SQLException {
+		return oracle.getDRCPState();
+	}
+
+	@Override
+	public LogicalTransactionId getLogicalTransactionId() throws SQLException {
+		return oracle.getLogicalTransactionId();
+	}
+
+	@Override
+	public boolean isDRCPEnabled() throws SQLException {
+		return oracle.isDRCPEnabled();
+	}
+
+	@Override
+	public boolean isDRCPMultitagEnabled() throws SQLException {
+		return oracle.isDRCPMultitagEnabled();
+	}
+
+	@Override
+	public boolean needToPurgeStatementCache() throws SQLException {
+		return oracle.needToPurgeStatementCache();
+	}
+
+	@Override
+	public void removeLogicalTransactionIdEventListener(LogicalTransactionIdEventListener listener) throws SQLException {
+		oracle.removeLogicalTransactionIdEventListener(listener);
+	}
+
+	@Override
+	public void setShardingKey(OracleShardingKey shardingKey, OracleShardingKey superShardingKey) throws SQLException {
+		oracle.setShardingKey(shardingKey, superShardingKey);
+	}
+
+	@Override
+	public boolean setShardingKeyIfValid(OracleShardingKey shardingKey, OracleShardingKey superShardingKey, int timeout) throws SQLException {
+		return oracle.setShardingKeyIfValid(shardingKey, superShardingKey, timeout);
+	}
+
+	@Override
+	public void startup(DatabaseStartupMode mode, String pfileName) throws SQLException {
+		oracle.startup(mode, pfileName);
 	}
 
 

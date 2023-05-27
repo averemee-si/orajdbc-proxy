@@ -20,7 +20,6 @@ import java.sql.SQLWarning;
 
 import oracle.jdbc.OracleConnection;
 import oracle.jdbc.OracleResultSet;
-import oracle.jdbc.OracleResultSetCache;
 import oracle.jdbc.OracleStatement;
 import oracle.jdbc.dcn.DatabaseChangeRegistration;
 
@@ -293,23 +292,26 @@ public class OraProxyStatement implements OracleStatement {
 		oracle.defineColumnType(columnIndex, type, typeName);
 	}
 
+	@Deprecated
 	@Override
 	public void defineColumnType(int columnIndex, int type, int lobPrefetchSize, short formOfUse) throws SQLException {
 		oracle.defineColumnType(columnIndex, type, lobPrefetchSize, formOfUse);
 	}
 
+	@Deprecated
 	@Override
 	public void defineColumnTypeBytes(int columnIndex, int type, int lobPrefetchSize) throws SQLException {
 		oracle.defineColumnTypeBytes(columnIndex, type, lobPrefetchSize);
 	}
 
+	@Deprecated
 	@Override
 	public void defineColumnTypeChars(int columnIndex, int type, int lobPrefetchSize) throws SQLException {
 		oracle.defineColumnTypeChars(columnIndex, type, lobPrefetchSize);
 	}
 
 	@Override
-	public int getLobPrefetchSize() {
+	public int getLobPrefetchSize() throws SQLException {
 		return oracle.getLobPrefetchSize();
 	}
 
@@ -341,11 +343,6 @@ public class OraProxyStatement implements OracleStatement {
 	@Override
 	public void setLobPrefetchSize(int size) throws SQLException {
 		oracle.setLobPrefetchSize(size);
-	}
-
-	@Override
-	public void setResultSetCache(OracleResultSetCache cache) throws SQLException {
-		oracle.setResultSetCache(cache);
 	}
 
 	@Override
