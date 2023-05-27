@@ -362,6 +362,11 @@ public class OraProxyConnection implements OracleConnection {
 	}
 
 	@Override
+	public boolean isValid(ConnectionValidation effort, int timeout) throws SQLException {
+		return oracle.isValid(effort, timeout);
+	}
+
+	@Override
 	public boolean isValid(int timeout) throws SQLException {
 		return oracle.isValid(timeout);
 	}

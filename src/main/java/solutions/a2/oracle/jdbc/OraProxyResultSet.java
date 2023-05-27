@@ -1479,4 +1479,19 @@ public class OraProxyResultSet implements OracleResultSet {
 		oracle.updateTIMESTAMPTZ(columnLabel, x);
 	}
 
+	@Override
+	public byte[] getCompileKey() throws SQLException {
+		return oracle.getCompileKey();
+	}
+
+	@Override
+	public byte[] getRuntimeKey() throws SQLException {
+		return oracle.getRuntimeKey();
+	}
+
+	@Override
+	public boolean isFromResultSetCache() throws SQLException {
+		return oracle.isFromResultSetCache();
+	}
+
 }
