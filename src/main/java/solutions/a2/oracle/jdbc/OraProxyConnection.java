@@ -694,6 +694,11 @@ public class OraProxyConnection implements OracleConnection {
 	}
 
 	@Override
+	public AQMessage dequeue(String queueName, AQDequeueOptions opt, byte[] tdo, int version) throws SQLException {
+		return oracle.dequeue(queueName, opt, tdo, version);
+	}
+
+	@Override
 	public void enqueue(String queueName, AQEnqueueOptions opt, AQMessage mesg) throws SQLException {
 		oracle.enqueue(queueName, opt, mesg);
 	}
@@ -1239,13 +1244,33 @@ public class OraProxyConnection implements OracleConnection {
 	}
 
 	@Override
+	public void setShardingKey(OracleShardingKey shardingKey) throws SQLException {
+		oracle.setShardingKey(shardingKey);
+	}
+
+	@Override
 	public boolean setShardingKeyIfValid(OracleShardingKey shardingKey, OracleShardingKey superShardingKey, int timeout) throws SQLException {
 		return oracle.setShardingKeyIfValid(shardingKey, superShardingKey, timeout);
 	}
 
 	@Override
+	public boolean setShardingKeyIfValid(OracleShardingKey shardingKey, int timeout) throws SQLException {
+		return oracle.setShardingKeyIfValid(shardingKey, timeout);
+	}
+
+	@Override
 	public void startup(DatabaseStartupMode mode, String pfileName) throws SQLException {
 		oracle.startup(mode, pfileName);
+	}
+
+	@Override
+	public String getChecksumProviderName() throws SQLException {
+		return oracle.getChecksumProviderName();
+	}
+
+	@Override
+	public String getEncryptionProviderName() throws SQLException {
+		return oracle.getEncryptionProviderName();
 	}
 
 
