@@ -55,6 +55,7 @@ import oracle.jdbc.aq.AQEnqueueOptions;
 import oracle.jdbc.aq.AQMessage;
 import oracle.jdbc.aq.AQNotificationRegistration;
 import oracle.jdbc.dcn.DatabaseChangeRegistration;
+import oracle.jdbc.diagnostics.SecuredLogger;
 import oracle.jdbc.pool.OracleConnectionCacheCallback;
 import oracle.sql.ARRAY;
 import oracle.sql.BINARY_DOUBLE;
@@ -436,6 +437,7 @@ public class OraProxyConnection implements OracleConnection {
 		oracle.abort();
 	}
 
+	@Deprecated
 	@Override
 	public void applyConnectionAttributes(Properties connAttr) throws SQLException {
 		oracle.applyConnectionAttributes(connAttr);
@@ -458,6 +460,7 @@ public class OraProxyConnection implements OracleConnection {
 		oracle.clearAllApplicationContext(nameSpace);
 	}
 
+	@Deprecated
 	@Override
 	public void close(Properties connAttr) throws SQLException {
 		oracle.close(connAttr);
@@ -689,18 +692,34 @@ public class OraProxyConnection implements OracleConnection {
 	}
 
 	@Override
-	public AQMessage dequeue(String queueName, AQDequeueOptions opt, String typeName) throws SQLException {
-		return oracle.dequeue(queueName, opt, typeName);
-	}
-
-	@Override
 	public AQMessage dequeue(String queueName, AQDequeueOptions opt, byte[] tdo, int version) throws SQLException {
 		return oracle.dequeue(queueName, opt, tdo, version);
 	}
 
 	@Override
+	public AQMessage[] dequeue(String queueName, AQDequeueOptions opt, byte[] tdo, int version, int deqSize)
+			throws SQLException {
+		return oracle.dequeue(queueName, opt, tdo, version, deqSize);
+	}
+
+	@Override
+	public AQMessage dequeue(String queueName, AQDequeueOptions opt, String typeName) throws SQLException {
+		return oracle.dequeue(queueName, opt, typeName);
+	}
+
+	@Override
+	public AQMessage[] dequeue(String queueName, AQDequeueOptions opt, String typeName, int deqSize) throws SQLException {
+		return oracle.dequeue(queueName, opt, typeName, deqSize);
+	}
+
+	@Override
 	public void enqueue(String queueName, AQEnqueueOptions opt, AQMessage mesg) throws SQLException {
 		oracle.enqueue(queueName, opt, mesg);
+	}
+
+	@Override
+	public int enqueue(String queueName, AQEnqueueOptions opt, AQMessage[] mesgs) throws SQLException {
+		return oracle.enqueue(queueName, opt, mesgs);
 	}
 
 	@Override
@@ -723,11 +742,13 @@ public class OraProxyConnection implements OracleConnection {
 		return oracle.getCallWithKey(key);
 	}
 
+	@Deprecated
 	@Override
 	public Properties getConnectionAttributes() throws SQLException {
 		return oracle.getConnectionAttributes();
 	}
 
+	@Deprecated
 	@Override
 	public int getConnectionReleasePriority() throws SQLException {
 		return oracle.getConnectionReleasePriority();
@@ -869,6 +890,7 @@ public class OraProxyConnection implements OracleConnection {
 		return oracle.getTypeDescriptorsFromListInCurrentSchema(typeNames);
 	}
 
+	@Deprecated
 	@Override
 	public Properties getUnMatchedConnectionAttributes() throws SQLException {
 		return oracle.getUnMatchedConnectionAttributes();
@@ -969,6 +991,7 @@ public class OraProxyConnection implements OracleConnection {
 		return oracle.registerAQNotification(name, options, globalOptions);
 	}
 
+	@Deprecated
 	@Override
 	public void registerConnectionCacheCallback(OracleConnectionCacheCallback occc, Object userObj, int cbkFlag)
 			throws SQLException {
@@ -1008,6 +1031,7 @@ public class OraProxyConnection implements OracleConnection {
 		oracle.setAutoClose(autoClose);
 	}
 
+	@Deprecated
 	@Override
 	public void setConnectionReleasePriority(int priority) throws SQLException {
 		oracle.setConnectionReleasePriority(priority);
@@ -1271,6 +1295,36 @@ public class OraProxyConnection implements OracleConnection {
 	@Override
 	public String getEncryptionProviderName() throws SQLException {
 		return oracle.getEncryptionProviderName();
+	}
+
+	@Override
+	public void disableLogging() throws SQLException {
+		oracle.disableLogging();
+	}
+
+	@Override
+	public void dumpLog() throws SQLException {
+		oracle.dumpLog();
+	}
+
+	@Override
+	public void enableLogging() throws SQLException {
+		oracle.enableLogging();
+	}
+
+	@Override
+	public SecuredLogger getLogger() throws SQLException {
+		return oracle.getLogger();
+	}
+
+	@Override
+	public String getNetConnectionId() throws SQLException {
+		return oracle.getNetConnectionId();
+	}
+
+	@Override
+	public Properties getServerSessionInfo() throws SQLException {
+		return oracle.getServerSessionInfo();
 	}
 
 
