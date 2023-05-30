@@ -55,9 +55,9 @@ repositories {
 
 dependencies {
     def oracleJdbcVersion = "21.10.0.0"
-    // https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8
-    compileOnly("com.oracle.database.jdbc:ojdbc8:$oracleJdbcVersion")
-    testImplementation("com.oracle.database.jdbc:ojdbc8:$oracleJdbcVersion")
+    // https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11
+    compileOnly("com.oracle.database.jdbc:ojdbc11:$oracleJdbcVersion")
+    testImplementation("com.oracle.database.jdbc:ojdbc11:$oracleJdbcVersion")
 
     def chronicleMapVersion = "3.23.5"
     // https://mvnrepository.com/artifact/net.openhft/chronicle-map
